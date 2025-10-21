@@ -21,10 +21,9 @@ export default function Upload() {
         console.error(error);
       });
   }, []);
-
   async function login() {
       try {
-    cconst result = await signInWithPopup(auth, googleProvider)
+    const resultt = await signInWithPopup(auth, googleProvider)
     setUser(result.user)
   } catch (error) {
     await signInWithRedirect(auth, googleProvider)
