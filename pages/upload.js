@@ -1,7 +1,7 @@
 import Head from 'next/head'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { auth, googleProvider, storage } from '../lib/firebaseClient'
-import { signInWithPopup } from 'firebase/auth'
+import { signInWithPopup, signInWithRedirect, getRedirectResult } from 'firebase/auth'
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
 
 export default function Upload() {
@@ -10,10 +10,25 @@ export default function Upload() {
   const [promptText, setPromptText] = useState('')
   const [file, setFile] = useState(null)
   const [progress, setProgress] = useState(0)
+    useEffect(() => {
+    getRedirectResult(auth)
+      .then((result) => {
+        if (result) {
+          setUser(result.user);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
 
   async function login() {
-    const result = await signInWithPopup(auth, googleProvider)
+      try {
+    cconst result = await signInWithPopup(auth, googleProvider)
     setUser(result.user)
+  } catch (error) {
+    await signInWithRedirect(auth, googleProvider)
   }
 
   async function handleUpload(e) {
