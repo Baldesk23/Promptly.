@@ -22,7 +22,6 @@ export default function Upload() {
       });
   }, []);
 
-
   async function login() {
       try {
     cconst result = await signInWithPopup(auth, googleProvider)
